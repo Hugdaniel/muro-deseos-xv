@@ -1,0 +1,182 @@
+:root{
+    --fondo: #0D0D0D;
+    --color2: #262626;
+    --color3: #404040;
+    --color4: #F2F2F2;
+    --color5: #E8C475;
+}
+/* Layout Principal */
+
+html, body {
+    height: 100vh;
+    width: 100%;
+    margin: 0;
+    overflow: hidden; /* Evita el scroll doble */
+    background-color: var(--fondo);
+}
+    
+
+.app-container {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    height: 100dvh;
+    /* background-color: #fcf4f9; */
+}
+
+/* Header */
+.header {
+    background: var(--color3);
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 10;
+    text-align: center;
+    border-bottom: 2px solid var(--color5);
+}
+
+.header h1 {
+    margin: 0;
+    color: var(--color4);
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.header p {
+    margin: 5px 0 0;
+    color: var(--color4);
+    font-size: 0.7rem;
+    font-weight: 400;
+}
+
+/* Muro (Centro con Scroll) */
+.muro-wrapper {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 30px;
+    background-image: radial-gradient(#ffdae9 0.5px, transparent 0.5px);
+    background-size: 20px 20px; /* Un fondo sutil de puntitos */
+}
+
+/* Barra de entrada de datos (encima del footer) */
+.action-bar {
+    background: #fff;
+    padding: 15px;
+    border-top: 1px solid #eee;
+}
+
+.input-container {
+    max-width: 850px;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding: 12;
+}
+
+.input-container textarea {
+    width: 75%;
+    max-width: 850px;
+    height: 45px;
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    resize: none;
+    font-size: 0.9rem;
+    background-color: #e6e6e6;
+}
+
+/* botones */
+/* Estilo Base para los Botones Nuevos */
+.buttons-group {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-action {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%; /* Siempre circulares */
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: none; /* Por defecto sin fondo */
+}
+
+/* Iconos dentro de los botones */
+.btn-action .material-symbols-outlined {
+    font-size: 22px; /* Tamaño elegante */
+    transition: color 0.3s ease;
+}
+
+/* --- Botón de Micrófono (Sutil) --- */
+.btn-mic {
+    color: #888; /* Gris neutro por defecto */
+}
+
+.btn-mic:hover {
+    background-color: #f5f5f5; /* Fondo gris casi blanco al pasar */
+    color: #444;
+}
+
+/* Estado Grabando (Cambio sutil pero claro) */
+.btn-mic.grabando {
+    color: #ef5350; /* Un rojo suave, no tan vibrante */
+    background-color: rgba(239, 83, 80, 0.1); /* Fondo rojizo muy pálido */
+    animation: pulseMic 1.5s infinite;
+}
+
+/* --- Botón de Enviar (Sutil y Elegante) --- */
+.btn-send {
+    color: #ff85a2; /* El color de acento de Vicky, pero sutil */
+    border: 1px solid #ffb6c1; /* Borde rosa pálido */
+}
+
+.btn-send:hover {
+    background-color: #ff85a2; /* Fondo rosa al pasar */
+    color: white; /* Icono blanco al pasar */
+    box-shadow: 0 4px 10px rgba(255, 133, 162, 0.3);
+}
+
+/* Animación de pulso para cuando graba */
+@keyframes pulseMic {
+    0% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(239, 83, 80, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0); }
+}
+
+/* Footer: Tu espacio de marca */
+.main-footer {
+    background: #222; /* Un fondo oscuro para contrastar */
+    color: #fff;
+    padding: 15px;
+    text-align: center;
+    font-size: 0.85rem;
+}
+
+.main-footer a {
+    color: #ff85a2;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.main-footer a:hover {
+    text-decoration: underline;
+}
+
+/* Efecto "Pop" para los mensajes (JS interactivo) */
+.card-deseo {
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes popIn {
+    0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+    100% { transform: scale(1) rotate(var(--rotacion)); opacity: 1; }
+}
