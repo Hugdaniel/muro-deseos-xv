@@ -12,7 +12,10 @@ html, body {
     width: 100%;
     margin: 0;
     overflow: hidden; /* Evita el scroll doble */
-    background-color: var(--fondo);
+    /* background-color: var(--fondo); */
+    /* https://grabient.com/HQNhE4BpgFhBmaIDsJowIzOvC0BMArIUhvtKjBRgByQaw1TDwAMr0NM5HD7vLdpFZA?angle=45 */
+
+background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.000%);
 }
     
 
@@ -22,6 +25,7 @@ html, body {
     flex-direction: column;
     height: 100dvh;
     /* background-color: #fcf4f9; */
+    z-index: -5;
 }
 
 /* Header */
@@ -53,15 +57,18 @@ html, body {
 .muro-wrapper {
     flex: 1;
     overflow-y: auto;
+    margin: 0 auto;
     padding: 20px;
     padding-bottom: 30px;
     background-image: radial-gradient(#ffdae9 0.5px, transparent 0.5px);
     background-size: 20px 20px; /* Un fondo sutil de puntitos */
+    width: 80%;
+    backdrop-filter: blur(5px); /* Un toque de desenfoque para suavizar el fondo */
 }
 
 /* Barra de entrada de datos (encima del footer) */
 .action-bar {
-    background: #fff;
+    background: transparent;
     padding: 15px;
     border-top: 1px solid #eee;
 }
@@ -80,11 +87,11 @@ html, body {
 .input-container textarea {
     width: 75%;
     max-width: 850px;
-    height: 45px;
+    height: 35px;
     flex: 1;
     padding: 12px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: 25px;
     resize: none;
     font-size: 0.9rem;
     background-color: #e6e6e6;
@@ -179,4 +186,59 @@ html, body {
 @keyframes popIn {
     0% { transform: scale(0.5) rotate(-5deg); opacity: 0; }
     100% { transform: scale(1) rotate(var(--rotacion)); opacity: 1; }
+}
+
+clases de js
+/* Clases para los mensajes */
+/* Estilo de la tarjeta de mensaje */
+.card-deseo {
+    background-color: #dddddd; /* Un gris oscuro elegante, no negro puro */
+    color: #ffffff;            /* Texto blanco puro */
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    border-bottom: 4px solid #ff85a2; /* El detalle rosa de Victoria */
+    transition: transform 0.3s ease;
+    animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    z-index: 15;
+}
+
+/* Estilo del texto del mensaje */
+.card-deseo p {
+    font-size: 1.05rem;
+    line-height: 1.5;
+    margin-bottom: 10px;
+    color: #f0f0f0; /* Un blanco roto para que no canse la vista */
+    white-space: pre-wrap; /* Mantiene los saltos de línea */
+}
+
+/* Estilo para los metadatos (hora) */
+.card-time {
+    display: block;
+    text-align: right;
+    font-size: 0.75rem;
+    color: #888; /* Gris sutil */
+    margin-top: 10px;
+}
+
+/* Ajuste del reproductor de audio para fondo oscuro */
+.audio-container {
+    background: rgba(255, 255, 255, 0.05); /* Un fondo apenas perceptible */
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.audio-container small {
+    color: #ffb6c1; /* El rosa claro para el texto de 'Mensaje de voz' */
+    display: block;
+    margin-bottom: 5px;
+}
+
+audio {
+    width: 100%;
+    filter: invert(100%) hue-rotate(180deg) brightness(1.5); /* Truco mágico para que el reproductor sea claro */
 }

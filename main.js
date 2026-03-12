@@ -20,8 +20,13 @@ const statusAudio = document.getElementById('statusAudio');
 // Función para iniciar la grabación
 async function iniciarGrabacion() {
     try {
+        // Pedimos el audio de la forma más básica posible para evitar errores de hardware
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-        mediaRecorder = new MediaRecorder(stream);
+        
+        // Verificamos qué formato soporta el dispositivo (WebM para Android/PC, MP4 para iOS)
+        const tipo = MediaRecorder.isTypeSupported('audio/webm') ? 'audio/webm' : 'audio/mp4';
+        
+        mediaRecorder = new MediaRecorder(stream, { mimeType: tipo });
         fragmentosAudio = [];
 
         mediaRecorder.ondataavailable = (e) => {
@@ -29,19 +34,27 @@ async function iniciarGrabacion() {
         };
 
         mediaRecorder.onstop = () => {
-            const blob = new Blob(fragmentosAudio, { type: 'audio/mp3' });
+            const blob = new Blob(fragmentosAudio, { type: tipo });
             audioURL = URL.createObjectURL(blob);
             statusAudio.innerText = "✅ Audio listo";
-            // Detenemos el micro para que se apague la luz/icono de grabación
             stream.getTracks().forEach(track => track.stop());
         };
 
         mediaRecorder.start();
         btnGrabar.classList.add('grabando');
-        statusAudio.innerText = "Graba ahora...";
+        statusAudio.innerText = "Grabando...";
+
     } catch (error) {
-        console.error("Error al acceder al mic:", error);
-        alert("No se pudo activar el micrófono. Revisa los permisos del navegador.");
+        console.error("Error crítico:", error);
+        
+        // Mensajes de ayuda según el error
+        if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
+            alert("⚠️ Permiso denegado. Toca el candado en la barra de direcciones y activa el micrófono.");
+        } else if (error.name === 'NotFoundError') {
+            alert("⚠️ No se detecta ningún micrófono conectado.");
+        } else {
+            alert("Error: " + error.message);
+        }
     }
 }
 
@@ -68,20 +81,33 @@ btnEnviar.onclick = () => {
     statusAudio.innerText = "";
 };
 
+
+// Función para crear una card con el deseo y el audio
 function crearCard(texto, audio) {
     const card = document.createElement('div');
     card.className = 'card-deseo';
+    
     const rot = (Math.random() * 4 - 2).toFixed(2);
     card.style.setProperty('--rotacion', `${rot}deg`);
     card.style.transform = `rotate(${rot}deg)`;
 
+    const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
     let contenidoHTML = "";
-    if (texto) contenidoHTML += `<p>${texto}</p>`;
-    if (audio) {
-        contenidoHTML += `<div class="audio-container">
-                            <audio src="${audio}" controls></audio>
-                          </div>`;
+    
+    if (texto) {
+        contenidoHTML += `<p>${texto}</p>`;
     }
+    
+    if (audio) {
+        contenidoHTML += `
+            <div class="audio-container">
+                <small>🎤 Mensaje de voz</small>
+                <audio src="${audio}" controls></audio>
+            </div>`;
+    }
+    
+    contenidoHTML += `<span class="card-time">${hora}</span>`;
     
     card.innerHTML = contenidoHTML;
     muro.prepend(card);
