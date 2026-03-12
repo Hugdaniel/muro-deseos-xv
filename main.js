@@ -87,9 +87,9 @@ function crearCard(texto, audio) {
     const card = document.createElement('div');
     card.className = 'card-deseo';
     
-    const rot = (Math.random() * 4 - 2).toFixed(2);
-    card.style.setProperty('--rotacion', `${rot}deg`);
-    card.style.transform = `rotate(${rot}deg)`;
+    // const rot = (Math.random() * 4 - 2).toFixed(2);
+    // card.style.setProperty('--rotacion', `${rot}deg`);
+    // card.style.transform = `rotate(${rot}deg)`;
 
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
