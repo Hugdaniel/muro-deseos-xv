@@ -11,6 +11,7 @@ html, body {
     height: 100vh;
     width: 100%;
     margin: 0;
+    padding: 0;
     overflow: hidden; /* Evita el scroll doble */
     /* background-color: var(--fondo); */
     /* https://grabient.com/HQNhE4BpgFhBmaIDsJowIzOvC0BMArIUhvtKjBRgByQaw1TDwAMr0NM5HD7vLdpFZA?angle=45 */
@@ -56,6 +57,17 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
     font-weight: 400;
 }
 
+/* EL MURO: El secreto está en flex: 1 */
+#muro {
+    flex: 1; /* Esto obliga al muro a usar TODO el espacio que sobre */
+    overflow-y: auto; /* Permite hacer scroll solo en los mensajes */
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-content: flex-start; /* Los mensajes empiezan arriba */
+    gap: 15px;
+}
+
 /* Muro (Centro con Scroll) */
 .muro-wrapper {
     flex: 1;
@@ -71,21 +83,87 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
 
 /* Barra de entrada de datos (encima del footer) */
 .action-bar {
-    background: rgba(255, 255, 255, 0.2);
-    backdrop-filter: blur(18px); /* Un toque de desenfoque para suavizar el fondo */
-    padding: 15px;
-    border-top: 1px solid #eee;
+    background: rgba(255, 255, 255, 0.23);
+    backdrop-filter: blur(20px);
+    padding: 15px 20px;
+    width: 100%;
+    box-sizing: border-box;
+    /* Ya no usamos flex: 1 aquí, para que no crezca sola */
+    border-top: 2px solid var(--color5);
+    box-shadow: 5px 0 15px rgba(0,0,0,0.29);
 }
 
 .input-container {
-    max-width: 850px;
-    margin-top: 10px;
+    width: 100%;
+    max-width: 380px;
+    margin: 0 auto; /* Centra el contenedor */
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    align-items: center;
+    align-items: stretch;
     gap: 10px;
-    padding: 12;
+}
+
+* Estilos comunes para asegurar el mismo ancho exacto */
+#nombreInvitado, 
+#textoDeseo {
+    width: 100% !important; /* Fuerza el ancho total dentro de su contenedor */
+    box-sizing: border-box !important; /* CRÍTICO: Incluye padding y border en el width 100% */
+    padding: 12px 15px;
+    border-radius: 20px; /* Ajusta para que combine con el estilo redondeado */
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    font-family: inherit;
+    /* Elimina márgenes laterales predeterminados */
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+/* Estilos específicos para el input de nombre */
+#nombreInvitado {
+    border-radius: 20px; /* Estilo redondeado como en tu imagen */
+}
+
+/* Estilos específicos para el textarea */
+#textoDeseo {
+    resize: none; /* Evita que el usuario lo redimensione */
+    min-height: 80px; /* Altura mínima */
+    border-radius: 30px; /* Más redondeado como en tu imagen */
+    padding-bottom: 25px; /* Espacio para el contador */
+}
+
+/* EL CONTENEDOR DE ICONOS (Donde está el micrófono y enviar) */
+.buttons-group {
+    width: 100%;
+    max-width: 400px; /* Mismo max-width que los inputs */
+    display: flex;
+    justify-content: center; /* CENTRA LOS BOTONES */
+    gap: 30px; /* Espacio entre el micrófono y enviar */
+    margin-top: 10px;
+}
+
+/* Estilos para los iconos (asegurando que no tengan márgenes extra) */
+.material-symbols-outlined {
+    margin: 0;
+    padding: 0;
+}
+
+.input-container input {
+    width: 60%;
+    max-width: 180px;
+    height: 20px;
+    /* flex: 1; */
+    padding: 12px 20px;
+    border: none;
+    font-size: 0.9rem;
+    background: transparent;
+}
+input:focus {
+    outline: none;
+    /* border: 1px solid #ffffff; */
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.25);
+    backdrop-filter: blur(25px);
 }
 
 .input-container textarea {
@@ -100,6 +178,13 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
     font-size: 0.9rem;
     background-color: rgba(255, 255, 255, 0.25);
     backdrop-filter: blur(25px);
+}
+
+textarea:focus {
+    outline: none;
+    border: 1px solid #ff85a2; /* Un borde rosa claro al enfocar */
+    background-color: rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(30px);
 }
 
 /* botones */
@@ -167,17 +252,24 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
 
 /* Footer: Tu espacio de marca */
 .main-footer {
-    background: #222; /* Un fondo oscuro para contrastar */
+    background: #5e5e5e; /* Un fondo oscuro para contrastar */
     color: #fff;
     padding: 15px;
     text-align: center;
     font-size: 0.85rem;
 }
 
+.main-footer strong {
+    font-weight: bold;
+    font-family: 'poppins', sans-serif;
+    text-transform: uppercase;
+    color: #ffffff; /* El rosa claro para destacar el nombre/marca */
+}
+
 .main-footer a {
-    color: #ff85a2;
+    color: #74d3ff;
     text-decoration: none;
-    margin: 0 5px;
+    margin: 8px 5px;
 }
 
 .main-footer a:hover {

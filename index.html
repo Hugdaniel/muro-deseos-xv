@@ -20,8 +20,13 @@
     </main>
 
     <section class="action-bar">
-        <div class="input-container">
-            <textarea id="textoDeseo" placeholder="Escribe tu deseo..."></textarea>
+        <div class="input-container" style="flex-direction: column;gap: 10px;">
+            <input type="text" id="nombreInvitado" placeholder="Tu nombre..." 
+           style="width: 100%; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); border-radius: 10px; padding: 8px 15px; color: white;">
+           <div style="flex: 1; position: relative;">
+            <textarea id="textoDeseo" maxlength="200" placeholder="Escribe tu deseo..."></textarea>
+            <small id="charCount" style="color: rgba(85, 85, 85, 0.4); position: absolute; bottom: 8px; right: 80px; font-size: 0.7rem;">0 / 200</small>
+        </div>
             <div class="buttons-group">
         <button id="btnGrabar" class="btn-action btn-mic" title="Grabar audio">
             <span class="material-symbols-outlined">mic</span>
@@ -37,12 +42,13 @@
 
     <footer class="main-footer">
         <div class="brand">
-            <p>Desarrollado por <strong>Tu Nombre/Marca</strong></p>
-            <div class="footer-links">
+            <p>Desarrollado por <strong>Vision Design</strong></p>
+            <!-- <div class="footer-links">
                 <a href="#">Contacto</a> • 
                 <a href="#">Portfolio</a> • 
                 <a href="#">Instagram</a>
-            </div>
+            </div> -->
+            <a href="https://vcard-visiondesign.netlify.app/">Contactanos</a>
         </div>
     </footer>
 

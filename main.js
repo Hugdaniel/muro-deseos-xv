@@ -16,6 +16,7 @@ const btnEnviar = document.getElementById('btnEnviar');
 const muro = document.getElementById('muro');
 const txtDeseo = document.getElementById('textoDeseo');
 const statusAudio = document.getElementById('statusAudio');
+let audioTimeout;
 
 // Función para iniciar la grabación
 async function iniciarGrabacion() {
@@ -34,18 +35,30 @@ async function iniciarGrabacion() {
         };
 
         mediaRecorder.onstop = () => {
+            clearTimeout(audioTimeout);
             const blob = new Blob(fragmentosAudio, { type: tipo });
             audioURL = URL.createObjectURL(blob);
             statusAudio.innerText = "✅ Audio listo";
             stream.getTracks().forEach(track => track.stop());
+            btnGrabar.classList.remove('grabando');
         };
 
         mediaRecorder.start();
         btnGrabar.classList.add('grabando');
-        statusAudio.innerText = "Grabando...";
+        statusAudio.innerText = "Grabando...(max.30s)";
+        statusAudio.style.color = "#ff85a2";
+
+        // Detener automáticamente después de 30 segundos
+        audioTimeout = setTimeout(() => {
+            if (mediaRecorder.state === "recording") {
+                mediaRecorder.stop();
+                alert("⏰ Tiempo máximo de grabación alcanzado. El audio se ha guardado.");
+            }
+        }, 30000);
 
     } catch (error) {
         console.error("Error crítico:", error);
+        alert("⚠️ No se pudo acceder al micrófono. Revisa los permisos y el hardware.");
         
         // Mensajes de ayuda según el error
         if (error.name === 'NotAllowedError' || error.name === 'PermissionDeniedError') {
@@ -83,17 +96,21 @@ btnEnviar.onclick = () => {
 
 
 // Función para crear una card con el deseo y el audio
-function crearCard(texto, audio) {
+// ... (Tus variables globales de mediaRecorder y audioURL siguen igual arriba)
+
+// 1. LA FUNCIÓN CREARCARD (Modificada para recibir el nombre)
+function crearCard(texto, audio, nombre = "Anónimo") {
     const card = document.createElement('div');
     card.className = 'card-deseo';
     
-    // const rot = (Math.random() * 4 - 2).toFixed(2);
-    // card.style.setProperty('--rotacion', `${rot}deg`);
-    // card.style.transform = `rotate(${rot}deg)`;
+    // Si quitaste la inclinación, esto puede no estar o estar en 0
+    const rot = (Math.random() * 2 - 1).toFixed(2);
+    card.style.transform = `rotate(${rot}deg)`;
 
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    let contenidoHTML = "";
+    // AQUÍ CONSTRUIMOS EL CONTENIDO: Primero el nombre, después el resto
+    let contenidoHTML = `<strong style="color: #ffffff; display: block; margin-bottom: 5px; font-size: 0.9rem;">${nombre}</strong>`;
     
     if (texto) {
         contenidoHTML += `<p>${texto}</p>`;
@@ -110,5 +127,44 @@ function crearCard(texto, audio) {
     contenidoHTML += `<span class="card-time">${hora}</span>`;
     
     card.innerHTML = contenidoHTML;
+    
+    const muro = document.getElementById('muro');
     muro.prepend(card);
 }
+
+// 2. LA LÓGICA DEL BOTÓN ENVIAR
+btnEnviar.onclick = () => {
+    const texto = txtDeseo.value.trim();
+    
+    // CAPTURAMOS EL NOMBRE (Asegúrate de tener el input con id="nombreInvitado" en el HTML)
+    const inputNombre = document.getElementById('nombreInvitado');
+    const nombre = inputNombre.value.trim() || "Anónimo"; 
+    
+    if (texto === "" && !audioURL) {
+        alert("Escribe un mensaje o graba un audio.");
+        return;
+    }
+
+    // PASAMOS EL NOMBRE A LA FUNCIÓN
+    crearCard(texto, audioURL, nombre);
+    
+    // LIMPIAMOS TODO
+    txtDeseo.value = "";
+    inputNombre.value = ""; // También limpiamos el nombre para el siguiente
+    audioURL = null;
+    statusAudio.innerText = "";
+    charCount.innerText = "0 / 200"; // Reseteamos el contador si lo pusiste
+};
+
+
+
+// Contador de caracteres en el textarea
+const charCount = document.getElementById('charCount');
+
+txtDeseo.oninput = () => {
+    const currentLength = txtDeseo.value.length;
+    charCount.innerText = `${currentLength} / 200`;
+    
+    // Cambiar color si llega al límite
+    charCount.style.color = currentLength >= 200 ? "#777777" : "rgba(255,255,255,0.4)";
+};
