@@ -1,10 +1,10 @@
 // Verificación de seguridad al cargar la página
-window.onload = () => {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        console.warn("⚠️ El navegador está bloqueando el micrófono por falta de HTTPS o soporte.");
-        statusAudio.innerHTML = "<small style='color:orange'>Usa HTTPS para activar el micrófono 🔒</small>";
-    }
-};
+// window.onload = () => {
+//     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+//         console.warn("⚠️ El navegador está bloqueando el micrófono por falta de HTTPS o soporte.");
+//         statusAudio.innerHTML = "<small style='color:orange'>Usa HTTPS para activar el micrófono 🔒</small>";
+//     }
+// };
 
 let mediaRecorder;
 let fragmentosAudio = [];
