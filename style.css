@@ -96,10 +96,14 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
 .input-container {
     width: 100%;
     max-width: 380px;
-    margin: 0 auto; /* Centra el contenedor */
+    /* margin: 0 auto;  */
+    /* Centra el contenedor */
+    margin-bottom: 10px;
+    margin-top: 20px;
     display: flex;
     flex-direction: column;
-    align-items: stretch;
+    align-items: stretch; /* Asegura que los inputs ocupen todo el ancho del contenedor */
+    justify-content: start;
     gap: 10px;
 }
 
@@ -121,13 +125,13 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
 
 /* Estilos específicos para el input de nombre */
 #nombreInvitado {
-    border-radius: 20px; /* Estilo redondeado como en tu imagen */
+    border-radius: 30px; /* Estilo redondeado como en tu imagen */
 }
 
 /* Estilos específicos para el textarea */
 #textoDeseo {
     resize: none; /* Evita que el usuario lo redimensione */
-    min-height: 80px; /* Altura mínima */
+    min-height: 5px; /* Altura mínima */
     border-radius: 30px; /* Más redondeado como en tu imagen */
     padding-bottom: 25px; /* Espacio para el contador */
 }
@@ -137,9 +141,9 @@ background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.
     width: 100%;
     max-width: 400px; /* Mismo max-width que los inputs */
     display: flex;
-    justify-content: center; /* CENTRA LOS BOTONES */
+    justify-content: flex-start; /* Alinea a la izquierda */
     gap: 30px; /* Espacio entre el micrófono y enviar */
-    margin-top: 10px;
+    margin-top: 5px;
 }
 
 /* Estilos para los iconos (asegurando que no tengan márgenes extra) */
@@ -169,7 +173,7 @@ input:focus {
 .input-container textarea {
     width: 75%;
     max-width: 850px;
-    height: 35px;
+    /* height: 10px; */
     flex: 1;
     padding: 12px 20px;
     border: 1px solid #ffffff;

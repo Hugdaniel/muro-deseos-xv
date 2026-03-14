@@ -104,8 +104,8 @@ function crearCard(texto, audio, nombre = "Anónimo") {
     card.className = 'card-deseo';
     
     // Si quitaste la inclinación, esto puede no estar o estar en 0
-    const rot = (Math.random() * 2 - 1).toFixed(2);
-    card.style.transform = `rotate(${rot}deg)`;
+    // const rot = (Math.random() * 2 - 1).toFixed(2);
+    // card.style.transform = `rotate(${rot}deg)`;
 
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
