@@ -83,19 +83,27 @@ btnGrabar.onclick = () => {
 
 // --- 3. LOGICA DE ENVIO A FIREBASE ---
 btnEnviar.onclick = async () => {
+    console.log("🚀 Iniciando proceso de envío...");
+    
     const texto = txtDeseo.value.trim();
     const inputNombre = document.getElementById('nombreInvitado');
     const nombreVal = inputNombre ? inputNombre.value.trim() || "Anónimo" : "Anónimo"; 
     
-    if (texto === "" && !audioURL) return;
+    // Verificamos qué tenemos para enviar
+    console.log("Datos a enviar:", { nombreVal, texto, tieneAudio: !!audioURL });
+
+    if (texto === "" && !audioURL) {
+        alert("Escribe algo o graba un audio antes de enviar.");
+        return;
+    }
 
     let urlFinalAudio = null;
 
     try {
-        // --- PROCESO DE AUDIO ---
+        // --- 1. SUBIDA A CLOUDINARY ---
         if (audioURL) {
-            statusAudio.innerText = "Subiendo audio... ☁️";
-            console.log("Intentando subir audio local:", audioURL);
+            statusAudio.innerText = "Subiendo audio a la nube... ☁️";
+            console.log("📦 Subiendo archivo a Cloudinary...");
             
             const audioBlob = await fetch(audioURL).then(r => r.blob());
             const formData = new FormData();
@@ -107,36 +115,43 @@ btnEnviar.onclick = async () => {
                 body: formData
             });
 
-            const data = await resp.json();
-            
-            if (data.secure_url) {
-                urlFinalAudio = data.secure_url;
-                console.log("✅ Audio en la nube:", urlFinalAudio);
-            } else {
-                console.error("❌ Cloudinary no devolvió URL:", data);
+            if (!resp.ok) {
+                const errorData = await resp.json();
+                throw new Error(`Error en Cloudinary: ${JSON.stringify(errorData)}`);
             }
+
+            const data = await resp.json();
+            urlFinalAudio = data.secure_url;
+            console.log("✅ Audio subido con éxito:", urlFinalAudio);
         }
 
-        // --- GUARDADO EN FIREBASE ---
+        // --- 2. GUARDADO EN FIREBASE ---
+        console.log("💾 Guardando en Firestore...");
         await addDoc(collection(db, "mensajes"), {
             invitado: nombreVal,
-            mensajes: texto, // Mantenemos la 's' ya que confirmaste que está así
+            mensaje: texto, // Asegúrate que aquí diga 'mensaje' o 'mensajes' según tu Firebase
             audioUrl: urlFinalAudio, 
             fecha: serverTimestamp()
         });
         
-        console.log("✅ Todo guardado en Firebase");
+        console.log("✨ Proceso completado con éxito");
 
-        // RESETEO
+        // --- 3. LIMPIEZA ---
         txtDeseo.value = "";
         if (inputNombre) inputNombre.value = "";
-        audioURL = null;
-        statusAudio.innerText = "";
-        if (charCount) charCount.innerText = "0 / 200";
+        audioURL = null; // Vaciamos la variable global
+        statusAudio.innerText = "¡Enviado con éxito!";
+        if (document.getElementById('charCount')) {
+            document.getElementById('charCount').innerText = "0 / 200";
+        }
+
+        // Limpiamos el mensaje de éxito después de 3 segundos
+        setTimeout(() => { statusAudio.innerText = ""; }, 3000);
 
     } catch (error) {
-        console.error("Error crítico en el envío:", error);
-        statusAudio.innerText = "❌ Error al subir";
+        console.error("❌ ERROR CRÍTICO:", error);
+        alert("Hubo un error al enviar. Revisa la consola para más detalles.");
+        statusAudio.innerText = "❌ Error al enviar";
     }
 };
 
