@@ -267,6 +267,30 @@ textarea:focus {
     100% { box-shadow: 0 0 0 0 rgba(239, 83, 80, 0); }
 }
 
+/* Cuando el botón tiene la clase .grabando (se la pone JS automáticamente) */
+#btnGrabar.grabando {
+    background-color: #ff4b2b !important; /* Rojo vibrante */
+    color: white;
+    box-shadow: 0 0 15px rgba(255, 75, 43, 0.6);
+    animation: pulso-mic 1.5s infinite;
+}
+
+@keyframes pulso-mic {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Estilo para el texto de estado debajo de los botones */
+#statusAudio {
+    display: block;
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: #ff85a2; /* Rosa de tu paleta */
+    min-height: 20px;
+}
+
 /* Footer: Tu espacio de marca */
 .main-footer {
     background: #5e5e5e; /* Un fondo oscuro para contrastar */
