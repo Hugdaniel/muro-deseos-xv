@@ -25,6 +25,7 @@ const charCount = document.getElementById('charCount');
 let mediaRecorder;
 let fragmentosAudio = [];
 let estaGrabando = false;
+let intervaloCronometro;
 
 // --- 1. FUNCIÓN PARA DIBUJAR LAS TARJETAS ---
 function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
@@ -58,11 +59,20 @@ async function iniciarGrabacion() {
 
         mediaRecorder.onstart = () => {
     tiempoInicio = Date.now(); // Guardamos el milisegundo exacto donde empezó
+    // INICIAR CRONÓMETRO
+            intervaloCronometro = setInterval(() => {
+                const ahora = Date.now();
+                const diff = Math.floor((ahora - tiempoInicio) / 1000);
+                const min = Math.floor(diff / 60);
+                const seg = (diff % 60).toString().padStart(2, '0');
+                statusAudio.innerText = `🔴 Grabando... ${min}:${seg} (Toca para enviar)`;
+            }, 1000);
 };
 
         mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) fragmentosAudio.push(e.data); };
 
         mediaRecorder.onstop = async () => {
+            clearInterval(intervaloCronometro); // Detener el cronómetro
             const duracionMs = Date.now() - tiempoInicio;
             const segundos = Math.floor(duracionMs / 1000);
             const minutos = Math.floor(segundos / 60);
