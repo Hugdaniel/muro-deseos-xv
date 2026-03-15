@@ -17,9 +17,9 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 // Lógica para enviar el mensaje
-const form = document.getElementById('form-mensaje');
+const form = document.getElementById('btn-enviar');
 
-form.addEventListener('submit', async (e) => {
+form.addEventListener('click', async (e) => {
     e.preventDefault();
 
     const nombre = document.getElementById('nombre').value;
