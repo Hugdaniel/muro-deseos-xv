@@ -89,15 +89,45 @@ btnEnviar.onclick = async () => {
     
     if (texto === "" && !audioURL) return;
 
+    let urlFinalAudio = null;
+
     try {
+        // --- PROCESO DE AUDIO ---
+        if (audioURL) {
+            statusAudio.innerText = "Subiendo audio... ☁️";
+            console.log("Intentando subir audio local:", audioURL);
+            
+            const audioBlob = await fetch(audioURL).then(r => r.blob());
+            const formData = new FormData();
+            formData.append('file', audioBlob);
+            formData.append('upload_preset', 'muro_victoria'); 
+
+            const resp = await fetch('https://api.cloudinary.com/v1_1/djwtwxfvh/auto/upload', {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await resp.json();
+            
+            if (data.secure_url) {
+                urlFinalAudio = data.secure_url;
+                console.log("✅ Audio en la nube:", urlFinalAudio);
+            } else {
+                console.error("❌ Cloudinary no devolvió URL:", data);
+            }
+        }
+
+        // --- GUARDADO EN FIREBASE ---
         await addDoc(collection(db, "mensajes"), {
             invitado: nombreVal,
-            mensajes: texto,
-            audioUrl: audioURL, 
+            mensajes: texto, // Mantenemos la 's' ya que confirmaste que está así
+            audioUrl: urlFinalAudio, 
             fecha: serverTimestamp()
         });
         
-        // Limpieza
+        console.log("✅ Todo guardado en Firebase");
+
+        // RESETEO
         txtDeseo.value = "";
         if (inputNombre) inputNombre.value = "";
         audioURL = null;
@@ -105,7 +135,8 @@ btnEnviar.onclick = async () => {
         if (charCount) charCount.innerText = "0 / 200";
 
     } catch (error) {
-        console.error("Error al guardar:", error);
+        console.error("Error crítico en el envío:", error);
+        statusAudio.innerText = "❌ Error al subir";
     }
 };
 
