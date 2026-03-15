@@ -97,7 +97,7 @@ async function enviarMensaje(blobUrl = null) {
             const audioBlob = await fetch(blobUrl).then(r => r.blob());
             const formData = new FormData();
             formData.append('file', audioBlob);
-            formData.append('upload_preset', 'muro_victoria'); 
+            formData.append('upload_preset', 'muro-victoria'); 
 
             const resp = await fetch('https://api.cloudinary.com/v1_1/djwtwxfvh/auto/upload', {
                 method: 'POST',
