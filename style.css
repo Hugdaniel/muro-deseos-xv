@@ -283,11 +283,12 @@ textarea:focus {
 
 /* Estilo para el texto de estado debajo de los botones */
 #statusAudio {
+    font-family: 'courier new', monospace;
     display: block;
     margin-top: 10px;
     font-size: 0.85rem;
     font-weight: bold;
-    color: #ff85a2; /* Rosa de tu paleta */
+    color: #ffffff; /* Rosa de tu paleta */
     min-height: 20px;
 }
 

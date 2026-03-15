@@ -59,6 +59,11 @@ async function iniciarGrabacion() {
 
         mediaRecorder.onstart = () => {
     tiempoInicio = Date.now(); // Guardamos el milisegundo exacto donde empezó
+    console.log("Grabación iniciada en: ", tiempoInicio);
+    
+    // limpiar intervalos previos
+    if (intervaloCronometro) clearInterval(intervaloCronometro);
+
     // INICIAR CRONÓMETRO
             intervaloCronometro = setInterval(() => {
                 const ahora = Date.now();
@@ -90,7 +95,7 @@ async function iniciarGrabacion() {
         mediaRecorder.start();
         estaGrabando = true;
         btnGrabar.classList.add('grabando');
-        statusAudio.innerText = "🔴 Grabando... Toca para enviar";
+        statusAudio.innerText = "🔴 Grabando... 0:00";
     } catch (error) {
         alert("Error con el micrófono: " + error.message);
     }
