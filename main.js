@@ -38,7 +38,7 @@ function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
     if (audio) {
         contenidoHTML += `
             <div class="audio-container">
-                <small>🎤 Mensaje de voz</small>
+                <small class="audio-info"> Mensaje de voz</small>
                 <audio src="${audio}" controls></audio>
             </div>`;
     }
