@@ -291,6 +291,13 @@ textarea:focus {
     min-height: 20px;
 }
 
+audio {
+    width: 100%;
+    height: 30px;
+    margin-top: 8px;
+    filter: sepia(20%) saturate(70%) grayscale(1) contrast(90%) invert(100%); /* Lo hace blanco/gris para que combine con el modo oscuro */
+}
+
 /* Footer: Tu espacio de marca */
 .main-footer {
     background: #5e5e5e; /* Un fondo oscuro para contrastar */

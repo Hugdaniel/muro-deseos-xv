@@ -27,7 +27,7 @@ let fragmentosAudio = [];
 let estaGrabando = false;
 
 // --- 1. FUNCIÓN PARA DIBUJAR LAS TARJETAS ---
-function crearCard(texto, audio, nombre = "Anónimo") {
+function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
     const card = document.createElement('div');
     card.className = 'card-deseo';
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -46,6 +46,8 @@ function crearCard(texto, audio, nombre = "Anónimo") {
     muro.prepend(card);
 }
 
+let tiempoInicio;
+
 // --- 2. LÓGICA DE GRABACIÓN Y ENVÍO AUTOMÁTICO (TIPO WHATSAPP) ---
 async function iniciarGrabacion() {
     try {
@@ -54,14 +56,23 @@ async function iniciarGrabacion() {
         mediaRecorder = new MediaRecorder(stream, { mimeType: tipo });
         fragmentosAudio = [];
 
+        mediaRecorder.onstart = () => {
+    tiempoInicio = Date.now(); // Guardamos el milisegundo exacto donde empezó
+};
+
         mediaRecorder.ondataavailable = (e) => { if (e.data.size > 0) fragmentosAudio.push(e.data); };
 
         mediaRecorder.onstop = async () => {
+            const duracionMs = Date.now() - tiempoInicio;
+            const segundos = Math.floor(duracionMs / 1000);
+            const minutos = Math.floor(segundos / 60);
+            const segRestantes = segundos % 60;
+             const duracionFormateada = `${minutos}:${segRestantes < 10 ? '0' : ''}${segRestantes}`;
             const blob = new Blob(fragmentosAudio, { type: tipo });
             const urlLocal = URL.createObjectURL(blob);
             
             // Envío automático al terminar de grabar
-            await enviarMensaje(urlLocal);
+            await enviarMensaje(urlLocal, duracionFormateada);
             
             stream.getTracks().forEach(track => track.stop());
         };
@@ -86,7 +97,7 @@ btnGrabar.onclick = () => {
 };
 
 // --- 3. FUNCIÓN COMPARTIDA PARA ENVIAR (TEXTO O AUDIO) ---
-async function enviarMensaje(blobUrl = null) {
+async function enviarMensaje(blobUrl = null, duracion = "") {
     const texto = txtDeseo.value.trim();
     const nombreVal = document.getElementById('nombreInvitado').value.trim() || "Anónimo";
     let urlFinalAudio = null;
@@ -111,6 +122,7 @@ async function enviarMensaje(blobUrl = null) {
             invitado: nombreVal,
             mensajes: texto,
             audioUrl: urlFinalAudio,
+            duracion: duracion,
             fecha: serverTimestamp()
         });
 
@@ -136,7 +148,7 @@ onSnapshot(q, (snapshot) => {
     muro.innerHTML = ""; 
     snapshot.forEach((doc) => {
         const datos = doc.data();
-        crearCard(datos.mensaje, datos.audioUrl, datos.invitado);
+        crearCard(datos.mensaje, datos.audioUrl, datos.invitado, datos.duracion);
     });
 });
 
