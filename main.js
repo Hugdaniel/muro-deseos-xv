@@ -108,7 +108,7 @@ btnEnviar.onclick = async () => {
             const audioBlob = await fetch(audioURL).then(r => r.blob());
             const formData = new FormData();
             formData.append('file', audioBlob);
-            formData.append('upload_preset', 'muro_victoria'); 
+            formData.append('upload_preset', 'muro-victoria'); 
 
             const resp = await fetch('https://api.cloudinary.com/v1_1/djwtwxfvh/auto/upload', {
                 method: 'POST',
@@ -129,7 +129,7 @@ btnEnviar.onclick = async () => {
         console.log("💾 Guardando en Firestore...");
         await addDoc(collection(db, "mensajes"), {
             invitado: nombreVal,
-            mensaje: texto, // Asegúrate que aquí diga 'mensaje' o 'mensajes' según tu Firebase
+            mensajes: texto, // Asegúrate que aquí diga 'mensaje' o 'mensajes' según tu Firebase
             audioUrl: urlFinalAudio, 
             fecha: serverTimestamp()
         });
