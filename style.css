@@ -17,7 +17,18 @@ html, body {
     /* https://grabient.com/HQNhE4BpgFhBmaIDsJowIzOvC0BMArIUhvtKjBRgByQaw1TDwAMr0NM5HD7vLdpFZA?angle=45 */
 
 background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.000%);
--webkit-tap-highlight-color: transparent; /* Quita el destello azul en navegadores móviles (Safari/Chrome Android) */
+}
+
+/* 1. Aplicar a absolutamente todo el sitio */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-tap-highlight-color: rgba(0,0,0,0); /* Refuerzo para algunos Android antiguos */
+}
+
+/* 2. Específicamente para los elementos que reaccionan al clic */
+a, button, input, textarea, .btn-action, .card-deseo {
+    -webkit-tap-highlight-color: transparent;
+    outline: none; /* De paso quitamos el borde que a veces sale al hacer foco */
 }
 
 
