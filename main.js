@@ -109,7 +109,7 @@ async function enviarMensaje(blobUrl = null) {
 
         await addDoc(collection(db, "mensajes"), {
             invitado: nombreVal,
-            mensaje: texto,
+            mensajes: texto,
             audioUrl: urlFinalAudio,
             fecha: serverTimestamp()
         });
