@@ -17,8 +17,10 @@ html, body {
     /* https://grabient.com/HQNhE4BpgFhBmaIDsJowIzOvC0BMArIUhvtKjBRgByQaw1TDwAMr0NM5HD7vLdpFZA?angle=45 */
 
 background: linear-gradient(45deg, #4159d0 0.000%, #fb9195 50.000%, #945db7 100.000%);
+-webkit-tap-highlight-color: transparent; /* Quita el destello azul en navegadores móviles (Safari/Chrome Android) */
 }
-    
+
+
 
 .app-container {
     display: flex;
