@@ -33,8 +33,8 @@ function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
     card.className = 'card-deseo';
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    let contenidoHTML = `<strong style="color: #ffffff; display: block; margin-bottom: 5px; font-size: 0.9rem;">${nombre}</strong>`;
-    if (texto) contenidoHTML += `<p>${texto}</p>`;
+    let contenidoHTML = `<strong style="color: #ffffff; display: block; margin-bottom: 5px; font-size: 0.9rem;">${texto}</strong>`;
+    if (texto) contenidoHTML += `<pstyle="color: white; margin-bottom: 10px;>${texto}</p>`;
     if (audio) {
         contenidoHTML += `
             <div class="audio-container">
@@ -163,7 +163,7 @@ onSnapshot(q, (snapshot) => {
     muro.innerHTML = ""; 
     snapshot.forEach((doc) => {
         const datos = doc.data();
-        crearCard(datos.mensaje, datos.audioUrl, datos.invitado, datos.duracion);
+        crearCard(datos.mensajes, datos.audioUrl, datos.invitado, datos.duracion);
     });
 });
 
