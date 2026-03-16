@@ -34,7 +34,10 @@ function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     let contenidoHTML = `<strong style="color: #ffffff; display: block; margin-bottom: 5px; font-size: 0.9rem;">${texto}</strong>`;
-    if (texto) contenidoHTML += `<pstyle="color: white; margin-bottom: 10px;>${texto}</p>`;
+    if (texto) {
+        contenidoHTML += `<p style="color: white; margin-bottom: 10px;>${texto}</p>`;
+    }
+
     if (audio) {
         contenidoHTML += `
             <div class="audio-container">
