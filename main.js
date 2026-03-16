@@ -34,7 +34,7 @@ function crearCard(texto, audio, nombre = "Anónimo", duracion = "") {
     const hora = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
     let contenidoHTML = `<strong style="color: #ffffff; display: block; margin-bottom: 5px; font-size: 0.9rem;">${nombre}</strong>`;
-    if (texto && texto !== "") {
+    if (texto) {
         contenidoHTML += `<p style="color: white; margin-bottom: 10px;>${texto}</p>`;
     }
 
@@ -166,7 +166,8 @@ onSnapshot(q, (snapshot) => {
     muro.innerHTML = ""; 
     snapshot.forEach((doc) => {
         const datos = doc.data();
-        crearCard(datos.mensajes, datos.audioUrl, datos.invitado, datos.duracion);
+        const textoAmostrar = datos.mensaje || datos.mensajes || ""; // Compatibilidad con ambos nombres
+        crearCard(textoAmostrar, datos.audioUrl, datos.invitado, datos.duracion);
     });
 });
 
